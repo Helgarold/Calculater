@@ -2,45 +2,44 @@ package org.example;
 
 import java.util.Scanner;
 
-public class calc {
+class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter an expression in the format 'number operation number':");
-        String expression = scanner.nextLine();
-        // Разбиваем строку на отдельные компоненты
-        String[] part = expression.split(" ");
+        System.out.println("Введите выражение:");
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        String input = scanner.nextLine();
 
-        /* Проверяем что в поступающей информации два числа
-        и алгебраическая операция
-         */
-        if (part.length != 3) {
-            System.out.println("Invalid expression format. Try again");
-            return;
+        try {
+            System.out.println(calc(input));
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
-        // Присваиваем переменным значения
-        int num1 = Integer.parseInt(part[0]);
-        int num2 = Integer.parseInt(part[2]);
-        String operation = part[1];
+    }
 
-        //Выполняем операцию на основе значения operation
-        int result = 0;
-        switch (operation) {
-            case "+":
-                result = num1 + num2;
-                break;
-            case "-":
-                result = num1 - num2;
-                break;
-            case "*":
-                result = num1 * num2;
-                break;
-            case "/":
-                result = num1 / num2;
-                break;
+    public static String calc(String input) throws Exception {
+        if (!input.matches("\\d+ [\\+\\-*/] \\d+")) {
+            throw new Exception("Неправильное выражение");
+        }
+
+        String[] parts = input.split(" ");
+        int num1 = Integer.parseInt(parts[0]);
+        int num2 = Integer.parseInt(parts[2]);
+        char op = parts[1].charAt(0);
+
+        if (num1 < 1 || num1 > 10 || num2 < 1 || num2 > 10) {
+            throw new Exception("Числа вне диапазона 1-10");
+        }
+
+        switch (op) {
+            case '+':
+                return String.valueOf("Результат операции: " + (num1 + num2));
+            case '-':
+                return String.valueOf("Результат операции: " + (num1 - num2));
+            case '*':
+                return String.valueOf("Результат операции: " + (num1 * num2));
+            case '/':
+                return String.valueOf("Результат операции: " + (num1 / num2));
             default:
-                System.out.println("Operation '" + operation + "' not found");
-                return;
+                throw new Exception("Неизвестная операция");
         }
-        System.out.println("Result operation: " + result);
     }
 }
